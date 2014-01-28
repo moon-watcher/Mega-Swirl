@@ -1,6 +1,6 @@
 /**************************************************************
  * Main                                                       *
- * Last Modified: 6/22/2013                                   *
+ * Last Modified: 1/28/2014                                   *
  *                                                            *
  * Sega Swirl is (c) Sega Enterprises Ltd and does not        *
  * endorse or contribute to this game in any way.             *
@@ -10,15 +10,19 @@
  */
 #include <genesis.h>
 #include <swirl_assets.h>
+
+#define FALSE 0
+#define TRUE 1
+
 #define BOARD_X 15
 #define BOARD_Y 14
 #define SWIRL_WIDTH 2
 #define SWIRL_HEIGHT 2
-#define FALSE 0
-#define TRUE 1
 #define PRIORITY_LOW 0
 #define PRIORITY_HIGH 1
-//#define USE_XORSHIFT
+#define CURSOR_INCREMENT_SPEED 8
+
+#define BUILD_DATE "Built 28 January 2014"
 
 #define CUR(x) (x * 2)
 #define SEL(x) (x / 16)
@@ -46,11 +50,9 @@ struct ls {
 	u8 y;
 } lastselected;
 
-volatile int toggle = TRUE; //test var that will be killed
 volatile int waitflag = FALSE;
 volatile u16 randbase;
 volatile int selected = FALSE;
-volatile int trigger = FALSE;
 int score = 0;
 SpriteDef cursor;
 
@@ -223,7 +225,7 @@ void joyHandler(u16 joy, u16 changed, u16 state) {
 				int oldy = cursor.posy;
 				while(cursor.posy != oldy - 16) {
 					VDP_waitVSync();
-					cursor.posy-=2;
+					cursor.posy-=CURSOR_INCREMENT_SPEED;
 					VDP_setSpriteDirectP(0, &cursor);
 				}
 			}
@@ -233,7 +235,7 @@ void joyHandler(u16 joy, u16 changed, u16 state) {
 				int oldy = cursor.posy;
 				while(cursor.posy != oldy + 16) {
 					VDP_waitVSync();
-					cursor.posy+=2;
+					cursor.posy+=CURSOR_INCREMENT_SPEED;
 					VDP_setSpriteDirectP(0, &cursor);
 				}
 			}
@@ -243,7 +245,7 @@ void joyHandler(u16 joy, u16 changed, u16 state) {
 				int oldx = cursor.posx;
 				while(cursor.posx != oldx - 16) {
 					VDP_waitVSync();
-					cursor.posx-=2;
+					cursor.posx-=CURSOR_INCREMENT_SPEED;
 					VDP_setSpriteDirectP(0, &cursor);
 				}
 			}
@@ -253,7 +255,7 @@ void joyHandler(u16 joy, u16 changed, u16 state) {
 				int oldx = cursor.posx;
 				while(cursor.posx != oldx + 16) {
 					VDP_waitVSync();
-					cursor.posx+=2;
+					cursor.posx+=CURSOR_INCREMENT_SPEED;
 					VDP_setSpriteDirectP(0, &cursor);
 				}
 			}
@@ -276,10 +278,7 @@ void titleHandler(u16 joy, u16 changed, u16 state) {
 void titleScreen() {
 	VDP_resetScreen();
 	VDP_resetSprites();
-	//palettes, tiles, and VDP registers get set here
-	//TODO: Title Screen
-	//TODO: Swirls
-	//Load sprites
+
 	VDP_loadTileData(swirls, TILE_USERINDEX, 20, TRUE);
 	VDP_setPalette(PAL1, swirl_pal);
 	VDP_setPalette(PAL2, sel_pal);
@@ -288,8 +287,8 @@ void titleScreen() {
 	JOY_setEventHandler(titleHandler);
 	
 	VDP_drawText("- MEGA SWIRL GAME TEST -", 8, 0);
-	VDP_drawText("Built June 22, 2013", 7, 2);
-	VDP_drawText("Version v0.1.1b", 12, 3);
+	VDP_drawText(BUILD_DATE, 7, 2);
+	VDP_drawText("Version v0.1.2b", 12, 3);
 	VDP_drawText("Press start to play.", 10, 5); 
 	while (waitflag == FALSE);
 
@@ -303,22 +302,22 @@ void srand(u16 seed) {
 }
 
 u16 custrand() {
-	 //this is the same random function but uses a different randbase
-	 //custrand() + srand() provides slightly more enthropy than the function alone
-	 #ifdef USE_XORSHIFT
-	 static u32 x = 123456789;
-	 static u32 y = 362436069;
-	 static u32 z = 521288629;
-	 static u32 w = 88675123;
-	 u32 t;
+	//this is the same random function but uses a different randbase
+	//custrand() + srand() provides slightly more enthropy than the function alone
+	#ifdef USE_XORSHIFT
+		static u32 x = 123456789;
+		static u32 y = 362436069;
+		static u32 z = 521288629;
+		static u32 w = 88675123;
+		u32 t;
 	 
-	t = x ^ (x << 11);
-	x = y; y = z; z = w;
-	w = w ^ (w >> 19) ^ (t ^ (t >> 8));
-	return w;
+		t = x ^ (x << 11);
+		x = y; y = z; z = w;
+		w = w ^ (w >> 19) ^ (t ^ (t >> 8));
+		return w;
 	#else
-	randbase ^= (randbase >> 1) ^ GET_HVCOUNTER;
-    randbase ^= (randbase << 1);
-    return randbase >> 3;
-    #endif
+		randbase ^= (randbase >> 1) ^ GET_HVCOUNTER;
+		randbase ^= (randbase << 1);
+		return randbase >> 3;
+	#endif
 }
