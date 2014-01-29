@@ -304,6 +304,7 @@ void titleScreen() {
 	VDP_drawText("- Press Start to Play -", 9, 15);
 	
 	while (waitflag == FALSE);
+	waitflag = FALSE;
 
 	srand(GET_HVCOUNTER);
 	VDP_clearPlan(APLAN, FALSE);
