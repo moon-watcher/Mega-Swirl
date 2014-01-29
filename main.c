@@ -9,7 +9,7 @@
  **************************************************************
  */
 #include <genesis.h>
-#include <swirl_assets.h>
+#include <res/swirl_assets.h>
 
 #define FALSE 0
 #define TRUE 1
