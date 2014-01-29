@@ -60,7 +60,8 @@ int main(void) {
 	titleScreen();
 	initBoard();
 	drawBoard();
-	VDP_drawText("MEGA SWIRL", 30, 0);
+	//VDP_drawText("MEGA SWIRL", 30, 0);
+	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 32, 0, 5, 3);
 	while(1) {
 		VDP_waitVSync();
 	}
