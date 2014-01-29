@@ -279,17 +279,30 @@ void titleScreen() {
 	VDP_resetScreen();
 	VDP_resetSprites();
 
+	// Load Swirls
 	VDP_loadTileData(swirls, TILE_USERINDEX, 20, TRUE);
+	VDP_loadTileData(title_screen, TILE_USERINDEX + 20, 15, TRUE);
 	VDP_setPalette(PAL1, swirl_pal);
 	VDP_setPalette(PAL2, sel_pal);
-	VDP_setPalette(PAL3, std_pal);
+	VDP_setPalette(PAL3, ts_pal);
+	
+	
 	JOY_init();
 	JOY_setEventHandler(titleHandler);
 	
+	/*
 	VDP_drawText("- MEGA SWIRL GAME TEST -", 8, 0);
 	VDP_drawText(BUILD_DATE, 7, 2);
 	VDP_drawText("Version v0.1.2b", 12, 3);
 	VDP_drawText("Press start to play.", 10, 5); 
+	*/
+	
+	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 18, 5, 5, 3);
+	VDP_drawText("Mega Swirl",  15, 9);
+	VDP_drawText("Game Test", 15, 10);
+	VDP_drawText("Version v0.1.3b", 13, 11);
+	VDP_drawText("- Press Start to Play -", 9, 15);
+	
 	while (waitflag == FALSE);
 
 	srand(GET_HVCOUNTER);
