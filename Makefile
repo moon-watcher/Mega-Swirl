@@ -10,7 +10,7 @@ WAVTORAW = wavtoraw
 
 OPTION =
 INCS = -I. -I$(GENDEV)/m68k-elf/include -I$(GENDEV)/m68k-elf/m68k-elf/include -Isrc -Ires
-CCFLAGS = $(OPTION) -m68000 -Wall -O2 -c -fomit-frame-pointer
+CCFLAGS = $(OPTION) -std=c99 -m68000 -Wall -O2 -c -fomit-frame-pointer
 HWCCFLAGS = $(OPTION) -m68000 -Wall -O1 -c -fomit-frame-pointer
 Z80FLAGS = -vb2
 ASFLAGS = -m68000 --register-prefix-optional
