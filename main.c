@@ -1,6 +1,5 @@
 /**************************************************************
  * Main                                                       *
- * Last Modified: 1/28/2014                                   *
  *                                                            *
  * Sega Swirl is (c) Sega Enterprises Ltd and does not        *
  * endorse or contribute to this game in any way.             *
@@ -191,6 +190,8 @@ void initBoard() {
 	cursor.link = 0;
 	VDP_setSpriteP(0, &cursor);
 	VDP_updateSprites();
+	
+	SND_startPlay_VGM(muz_gameplay1);
 }
 
 void unselectEverything() {
@@ -310,6 +311,7 @@ void titleScreen() {
 	VDP_drawText("Game Test", 15, 10);
 	VDP_drawText("Version v0.1.3b", 13, 11);
 	VDP_drawText("- Press Start to Play -", 9, 15);
+	VDP_drawText("Music from Deflemask by Delek", 6, 17);
 
 	u8 selected_swirl;
 	for(int i = 0; i != TITLE_SCREEN_SNOWFLAKES; i++) {
