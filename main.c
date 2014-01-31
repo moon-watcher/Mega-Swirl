@@ -21,7 +21,7 @@
 #define PRIORITY_LOW 0
 #define PRIORITY_HIGH 1
 #define CURSOR_INCREMENT_SPEED 8
-#define TITLE_SCREEN_SNOWFLAKES 15
+#define TITLE_SCREEN_SNOWFLAKES 20
 
 #define BUILD_DATE "Built 28 January 2014"
 
@@ -309,7 +309,7 @@ void titleScreen() {
 	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 18, 5, 5, 3);
 	VDP_drawText("Mega Swirl",  15, 9);
 	VDP_drawText("Game Test", 15, 10);
-	VDP_drawText("Version v0.1.3b", 13, 11);
+	VDP_drawText("Version v0.1.4b", 13, 11);
 	VDP_drawText("- Press Start to Play -", 9, 15);
 	VDP_drawText("Music from Deflemask by Delek", 6, 17);
 
