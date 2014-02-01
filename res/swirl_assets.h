@@ -101,7 +101,7 @@ const u32 title_screen[120] = {
 };
 
 // Zontar sprites
-const u32 zontar[96] = {
+const u32 zontar[128] = {
 	// Zontar idle
 	0x00000000, 0x00660000, 0x00606055, 0x060055DD, 0x0605DDDD, 0x0605DD3D, 0x0005DD3D, 0x0005DDDD, 	//  Tile: 0
 	0x0005DDDD, 0x000055DD, 0x00000555, 0x0000B5DD, 0x000B05DD, 0x000B05DD, 0x0000B5DD, 0x000005DD, 	//  Tile: 1

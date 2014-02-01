@@ -56,8 +56,6 @@ typedef struct {
 	u32 startedAt;
 	u32 startDelay;
 	u8 fallRate;
-	s16 xPos;
-	s16 yPos;
 	u8 swirltype;
 } snowflake;
 
@@ -317,8 +315,6 @@ void titleScreen() {
 	for(int i = 0; i != TITLE_SCREEN_SNOWFLAKES; i++) {
 		snowflakes[i].startedAt = 
 		snowflakes[i].startDelay =
-		snowflakes[i].xPos =
-		snowflakes[i].yPos = 
 		snowflakes[i].fallRate =
 		snowflakes[i].swirltype =
 		0;
@@ -335,8 +331,8 @@ void titleScreen() {
 		snowflakes[i].startDelay = ((custrand() % 3000) + 1) / 300; // Select between a 1-10 second delay (300 ticks per second)
 		snowflakes[i].startedAt = getTick(); // Time when this snowflake was created 
 		snowflakes[i].fallRate = (custrand() % 2) + 1; // Select how fast this snowflake should fall to the bottom of the screen
-		snowflakes[i].xPos = sfdefs[i].posx = (custrand() % 320); // Select X position for this swirl
-		snowflakes[i].yPos = sfdefs[i].posy = -16; // Start it off screen
+		sfdefs[i].posx = (custrand() % 320); // Select X position for this swirl
+		sfdefs[i].posy = -16; // Start it off screen
 		
 		sfdefs[i].size = SPRITE_SIZE(2, 2);
 		sfdefs[i].tile_attr = TILE_ATTR_FULL(PAL1, PRIORITY_HIGH, FALSE, FALSE, TILE_USERINDEX + 35 + (4 * selected_swirl)); // This will need to be changed as we need tiles arranged for sprites
@@ -358,15 +354,15 @@ void titleScreen() {
 			
 			if(getTick() - snowflakes[i].startedAt >= snowflakes[i].startDelay) {
 				
-				if(snowflakes[i].yPos != 240) {
-					sfdefs[i].posy = snowflakes[i].yPos = sfdefs[i].posy + snowflakes[i].fallRate;
+				if(sfdefs[i].posy != 240) {
+					sfdefs[i].posy = sfdefs[i].posy + snowflakes[i].fallRate;
 				} else {
 					selected_swirl = (custrand() % 4);
 					snowflakes[i].startDelay = ((custrand() % 3000) + 1) / 300;
 					snowflakes[i].startedAt = getTick();
 					snowflakes[i].fallRate = (custrand() % 2) + 1;
-					snowflakes[i].xPos = sfdefs[i].posx = (custrand() % 320);
-					snowflakes[i].yPos = sfdefs[i].posy = -16;
+					sfdefs[i].posx = (custrand() % 320);
+					sfdefs[i].posy = -16;
 				}
 				
 			}
