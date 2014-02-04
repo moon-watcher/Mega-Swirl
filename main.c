@@ -59,6 +59,7 @@ void drawBoard();
 void recursiveFloodSelect(int x, int y, int ch, int selbit);
 int recursiveDelete(int x, int y, int type);
 dropcolumn findFloorRow(int column);
+void drawColumnToBPlan(int column, int floor);
 void applyGravity();
 void applyAnimatedGravity();
 void applyLeftShift();
@@ -77,6 +78,7 @@ int main(void) {
 	titleScreen();
 	initBoard();
 	drawBoard();
+	// Draw logo
 	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 32, 0, 5, 3);
 	while(1) {
 		VDP_waitVSync();
@@ -140,6 +142,15 @@ dropcolumn findFloorRow(int column) {
 	return rv;
 }
 
+void drawColumnToBPlan(int column, int floor) {
+	VDP_clearPlan(VDP_PLAN_B, FALSE);
+	
+	for(int y = floor - 1; y != -1; y--) {
+		if (board[y][column].id)
+			VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL1, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + (4 * board[y][column].id)), CUR(column), CUR(y), SWIRL_WIDTH, SWIRL_HEIGHT);
+	}
+}
+
 // @deprecated
 void applyGravity() {
 	int x, y, ch, i;
@@ -160,7 +171,37 @@ void applyGravity() {
 }
 
 void applyAnimatedGravity() {
+	dropcolumn boardColumns[BOARD_X];
+	u8 complete = FALSE;
+	u8 minSwirls;
 
+	while(!complete) {
+		minSwirls = 99;
+		
+		// DEBUG: clear APLAN
+		VDP_clearPlan(VDP_PLAN_A, FALSE);
+		
+		// Find the floor/closest falling swirl to floor in each column
+		for(int i = 0; i != BOARD_X; i++) {
+			boardColumns[i] = findFloorRow(i);
+			
+			// bottomSwirl will be -1 if no gravity operation needs to be done
+			if(boardColumns[i].bottomSwirl != -1) {
+				// Find distance between the floor and the bottom swirl in this column
+				int diff = boardColumns[i].floor - boardColumns[i].bottomSwirl - 1;
+				
+				// Note if this is the lowest number of swirls from any column floor
+				if(minSwirls < diff)
+					minSwirls = diff;
+				
+				// Draw this column to the BPLAN from floor to ceiling
+				drawColumnToBPlan(i, boardColumns[i].floor);
+			}
+		}
+		
+		// DEBUG: Freeze and display the results of my work
+		while(TRUE) ;
+	}
 	
 }
 
@@ -253,7 +294,7 @@ void joyHandler(u16 joy, u16 changed, u16 state) {
 						score-=10;
 					else
 						score+=deleted_amount * 10;
-					applyGravity();
+					applyAnimatedGravity();
 					applyLeftShift();
 					drawBoard();
 					selected = FALSE;
