@@ -28,19 +28,6 @@
 #define CUR(x) (x * 2)
 #define SEL(x) (x / 16)
 
-void joyHandler(u16 joy, u16 changed, u16 state);
-void titleHandler(u16 joy, u16 changed, u16 state);
-void initBoard();
-void drawBoard();
-void recursiveFloodSelect(int x, int y, int ch, int selbit);
-int recursiveDelete(int x, int y, int type);
-void applyGravity();
-void applyLeftShift();
-void titleScreen();
-void srand(u16 seed);
-u16 custrand();
-void unselectEverything();
-
 struct swirl {
 	u8 id;
 	u8 selected;
@@ -58,6 +45,27 @@ typedef struct {
 	u8 fallRate;
 	u8 swirltype;
 } snowflake;
+
+// A "dropcolumn" describes the distance between the floor and the first swirl in a single column
+typedef struct {
+	int floor;
+	int bottomSwirl;
+} dropcolumn;
+
+void joyHandler(u16 joy, u16 changed, u16 state);
+void titleHandler(u16 joy, u16 changed, u16 state);
+void initBoard();
+void drawBoard();
+void recursiveFloodSelect(int x, int y, int ch, int selbit);
+int recursiveDelete(int x, int y, int type);
+dropcolumn findFloorRow(int column);
+void applyGravity();
+void applyAnimatedGravity();
+void applyLeftShift();
+void titleScreen();
+void srand(u16 seed);
+u16 custrand();
+void unselectEverything();
 
 volatile int waitflag = FALSE;
 volatile u16 randbase;
@@ -104,6 +112,35 @@ int recursiveDelete(int x, int y, int type) {
 	return toret;
 }
 
+dropcolumn findFloorRow(int column) {
+	dropcolumn rv = {-1, -1};
+	
+	for(int y = BOARD_Y - 1; y != -1; y--) {
+		
+		if(board[y][column].id == 0) {
+			
+			// This is not a swirl. Check if we found the first zero
+			if(rv.floor == -1)
+				rv.floor = (y + 1 == BOARD_Y) ? BOARD_Y : y + 1;
+			
+		} else {
+
+			// This is a swirl and we already found the first zero.
+			// This means that there's still gravity that must be done
+			if(rv.floor != -1) {
+				rv.bottomSwirl = y;
+				return rv;
+			}
+
+		}
+		
+	}
+	
+	// No gravity needs to be applied for this row
+	return rv;
+}
+
+// @deprecated
 void applyGravity() {
 	int x, y, ch, i;
 	for(y = BOARD_Y-2; y >= 0; y--) {
@@ -120,6 +157,11 @@ void applyGravity() {
 			}
 		}
 	}
+}
+
+void applyAnimatedGravity() {
+
+	
 }
 
 void applyLeftShift() {
