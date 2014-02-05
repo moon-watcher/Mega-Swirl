@@ -176,9 +176,6 @@ void applyAnimatedGravity() {
 	while(!complete) {
 		minSwirls = 99;
 		
-		// DEBUG: clear APLAN
-		VDP_clearPlan(VDP_PLAN_A, FALSE);
-		
 		VDP_clearPlan(VDP_PLAN_B, FALSE);
 		
 		// Find the floor/closest falling swirl to floor in each column
@@ -199,11 +196,14 @@ void applyAnimatedGravity() {
 			}
 		}
 		
+		// Need drawboard that does not redraw from floor to top for each selected column
+		drawBoard();
+		
 		// DEBUG: Freeze and display the results of my work
 		VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
 		for(int i = 0; i != (minSwirls * 16) + 1; i++) {
 			VDP_setVerticalScroll(VDP_PLAN_B, (i * -1));
-			waitMs(100);
+			waitMs(75);
 		}
 		
 		while(TRUE); 
