@@ -142,9 +142,7 @@ dropcolumn findFloorRow(int column) {
 	return rv;
 }
 
-void drawColumnToBPlan(int column, int floor) {
-	VDP_clearPlan(VDP_PLAN_B, FALSE);
-	
+void drawColumnToBPlan(int column, int floor) {	
 	for(int y = floor - 1; y != -1; y--) {
 		if (board[y][column].id)
 			VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL1, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + (4 * board[y][column].id)), CUR(column), CUR(y), SWIRL_WIDTH, SWIRL_HEIGHT);
@@ -180,6 +178,7 @@ void applyAnimatedGravity() {
 		
 		// DEBUG: clear APLAN
 		VDP_clearPlan(VDP_PLAN_A, FALSE);
+		VDP_clearPlan(VDP_PLAN_B, FALSE);
 		
 		// Find the floor/closest falling swirl to floor in each column
 		for(int i = 0; i != BOARD_X; i++) {
