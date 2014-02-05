@@ -178,6 +178,7 @@ void applyAnimatedGravity() {
 		
 		// DEBUG: clear APLAN
 		VDP_clearPlan(VDP_PLAN_A, FALSE);
+		
 		VDP_clearPlan(VDP_PLAN_B, FALSE);
 		
 		// Find the floor/closest falling swirl to floor in each column
@@ -190,7 +191,7 @@ void applyAnimatedGravity() {
 				int diff = boardColumns[i].floor - boardColumns[i].bottomSwirl - 1;
 				
 				// Note if this is the lowest number of swirls from any column floor
-				if(minSwirls < diff)
+				if(diff < minSwirls)
 					minSwirls = diff;
 				
 				// Draw this column to the BPLAN from floor to ceiling
@@ -199,7 +200,13 @@ void applyAnimatedGravity() {
 		}
 		
 		// DEBUG: Freeze and display the results of my work
-		while(TRUE) ;
+		VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
+		for(int i = 0; i != (minSwirls * 16) + 1; i++) {
+			VDP_setVerticalScroll(VDP_PLAN_B, (i * -1));
+			waitMs(100);
+		}
+		
+		while(TRUE); 
 	}
 	
 }
