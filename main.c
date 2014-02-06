@@ -207,8 +207,9 @@ void applyAnimatedGravity() {
 	while(TRUE) {
 		minSwirls = 99;
 		
-		VDP_clearPlan(VDP_PLAN_B, FALSE);
-		
+		VDP_clearPlan(VDP_PLAN_B, TRUE);
+		waitMs(2000);
+
 		// Find the floor/closest falling swirl to floor in each column
 		for(int i = 0; i != BOARD_X; i++) {
 			boardColumns[i] = findFloorRow(i);
@@ -235,6 +236,11 @@ void applyAnimatedGravity() {
 		// Need drawboard that does not redraw from floor to top for each selected column
 		drawMidAnimationBoard();
 		
+		for(int i = 0; i != (minSwirls * 16) + 1; i++) {
+			VDP_setVerticalScroll(VDP_PLAN_B, (i * -1));
+			waitMs(500);
+		}
+		
 		// Shift selected rows down by minSwirls
 		for(int x = 0; x != BOARD_X; x++) {
 			if(boardColumns[x].bottomSwirl != -1) {
@@ -242,14 +248,6 @@ void applyAnimatedGravity() {
 			}
 		}
 		
-		// DEBUG: Freeze and display the results of my work
-
-		for(int i = 0; i != (minSwirls * 16) + 1; i++) {
-			VDP_setVerticalScroll(VDP_PLAN_B, (i * -1));
-			waitMs(30);
-		}
-		
-		drawBoard();
 	}
 	
 }
@@ -321,7 +319,7 @@ void initBoard() {
 	VDP_setSpriteP(0, &cursor);
 	VDP_updateSprites();
 	
-	SND_startPlay_VGM(muz_gameplay1);
+	//SND_startPlay_VGM(muz_gameplay1);
 }
 
 void unselectEverything() {
