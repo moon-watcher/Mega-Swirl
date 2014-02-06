@@ -61,6 +61,7 @@ int recursiveDelete(int x, int y, int type);
 dropcolumn findFloorRow(int column);
 void drawColumnToBPlan(int column, int floor);
 void applyGravity();
+void drawMidAnimationBoard();
 void applyAnimatedGravity();
 void applyLeftShift();
 void titleScreen();
@@ -144,8 +145,11 @@ dropcolumn findFloorRow(int column) {
 
 void drawColumnToBPlan(int column, int floor) {	
 	for(int y = floor - 1; y != -1; y--) {
-		if (board[y][column].id)
+		if (board[y][column].id) {
 			VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL1, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + (4 * board[y][column].id)), CUR(column), CUR(y), SWIRL_WIDTH, SWIRL_HEIGHT);
+			// Mark the tile to NOT be drawn on the APLAN using the existing selbit
+			board[y][column].selected = TRUE;
+		}
 	}
 }
 
@@ -163,6 +167,23 @@ void applyGravity() {
 					board[i][x].id = ch;
 					i++;
 				}
+			}
+		}
+	}
+}
+
+void drawMidAnimationBoard() {
+	// Draw board to APLAN but do not draw ones selected
+	int x, y;
+	for (y = 0; y != BOARD_Y; y++) {
+		for (x = 0; x != BOARD_X; x++) {
+			if (board[y][x].id) {
+				if (board[y][x].selected)
+					VDP_clearTileMapRect(VDP_PLAN_A, CUR(x), CUR(y), SWIRL_WIDTH, SWIRL_HEIGHT);
+				else
+					VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL1, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + (4 * board[y][x].id)), CUR(x), CUR(y), SWIRL_WIDTH, SWIRL_HEIGHT);
+			} else {
+				VDP_clearTileMapRect(VDP_PLAN_A, CUR(x), CUR(y), SWIRL_WIDTH, SWIRL_HEIGHT);
 			}
 		}
 	}
@@ -197,7 +218,7 @@ void applyAnimatedGravity() {
 		}
 		
 		// Need drawboard that does not redraw from floor to top for each selected column
-		drawBoard();
+		drawMidAnimationBoard();
 		
 		// DEBUG: Freeze and display the results of my work
 		VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
