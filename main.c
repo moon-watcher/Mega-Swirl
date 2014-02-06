@@ -62,6 +62,7 @@ dropcolumn findFloorRow(int column);
 void drawColumnToBPlan(int column, int floor);
 void applyGravity();
 void drawMidAnimationBoard();
+void shiftColumnDown(int column, int bottomSwirl, u8 minSwirls);
 void applyAnimatedGravity();
 void applyLeftShift();
 void titleScreen();
@@ -189,12 +190,21 @@ void drawMidAnimationBoard() {
 	}
 }
 
+void shiftColumnDown(int column, int bottomSwirl, u8 minSwirls) {
+	// Bottom to the top shift-down
+	for(int y = bottomSwirl; y != -1; y--) {
+		if(board[y][column].id != 0) {
+			board[y+minSwirls][column].id = board[y][column].id;
+			board[y][column].id = board[y][column].selected = 0;
+		}
+	}
+}
+
 void applyAnimatedGravity() {
 	dropcolumn boardColumns[BOARD_X];
-	u8 complete = FALSE;
 	u8 minSwirls;
 
-	while(!complete) {
+	while(TRUE) {
 		minSwirls = 99;
 		
 		VDP_clearPlan(VDP_PLAN_B, FALSE);
@@ -217,17 +227,29 @@ void applyAnimatedGravity() {
 			}
 		}
 		
+		// Break if we didn't find a column needing a gravity operation
+		// (Sorry, Edsger Dijkstra)
+		if(minSwirls == 99)
+			break;
+		
 		// Need drawboard that does not redraw from floor to top for each selected column
 		drawMidAnimationBoard();
 		
-		// DEBUG: Freeze and display the results of my work
-		VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
-		for(int i = 0; i != (minSwirls * 16) + 1; i++) {
-			VDP_setVerticalScroll(VDP_PLAN_B, (i * -1));
-			waitMs(75);
+		// Shift selected rows down by minSwirls
+		for(int x = 0; x != BOARD_X; x++) {
+			if(boardColumns[x].bottomSwirl != -1) {
+				shiftColumnDown(x, boardColumns[x].bottomSwirl, minSwirls);
+			}
 		}
 		
-		while(TRUE); 
+		// DEBUG: Freeze and display the results of my work
+
+		for(int i = 0; i != (minSwirls * 16) + 1; i++) {
+			VDP_setVerticalScroll(VDP_PLAN_B, (i * -1));
+			waitMs(30);
+		}
+		
+		drawBoard();
 	}
 	
 }
