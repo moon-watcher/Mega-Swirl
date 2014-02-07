@@ -10,6 +10,7 @@
 #include <genesis.h>
 #include <audio/titlescreen.h>
 #include <res/swirl_assets.h>
+#include <bmp.h>
 
 #define FALSE 0
 #define TRUE 1
