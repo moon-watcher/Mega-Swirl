@@ -1,3 +1,6 @@
+#ifndef TITLESCREEN_H
+#define TITLESCREEN_H
+
 // This is one of the demos that came with Deflemask used as a placeholder
 // This song is (c) Delek
 
@@ -2815,3 +2818,5 @@ const unsigned char muz_gameplay1[22900] = {
 	,101,0,108,0,101,0,107,0,39,0,115,0,32,0,68,0,101,0,102,0,108,0,101,0,77,0,97,0,115,0,107,0
 	,32,0,84,0,114,0,97,0,99,0,107,0,101,0,114,0,0,0,0,0
 };
+
+#endif //TITLESCREEN_H

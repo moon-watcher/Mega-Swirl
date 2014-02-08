@@ -7,10 +7,8 @@
  * original author(s).                                        *
  **************************************************************
  */
-#include <genesis.h>
-#include <audio/titlescreen.h>
-#include <res/swirl_assets.h>
-#include <bmp.h>
+
+#include "swirl.h"
 
 #define FALSE 0
 #define TRUE 1
@@ -23,8 +21,6 @@
 #define PRIORITY_HIGH 1
 #define CURSOR_INCREMENT_SPEED 8
 #define TITLE_SCREEN_SNOWFLAKES 20
-
-#define BUILD_DATE "Built 28 January 2014"
 
 #define CUR(x) (x * 2)
 #define SEL(x) (x / 16)
@@ -70,7 +66,7 @@ int main(void) {
 	titleScreen();
 	initBoard();
 	drawBoard();
-	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 32, 0, 5, 3);
+	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL1, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 32, 0, 5, 3);
 	while(1) {
 		VDP_waitVSync();
 	}
@@ -298,14 +294,14 @@ void titleScreen() {
 	VDP_loadTileData(swirls, TILE_USERINDEX, 20, TRUE);
 	VDP_loadTileData(title_screen, TILE_USERINDEX + 20, 15, TRUE);
 	VDP_loadTileData(swirl_spr, TILE_USERINDEX + 35, 20, TRUE);
-	VDP_setPalette(PAL1, swirl_pal);
+	VDP_setPalette(PAL1, tswirl_pal);
 	VDP_setPalette(PAL2, sel_pal);
-	VDP_setPalette(PAL3, ts_pal);
+	VDP_setPalette(PAL3, std_pal);
 	
 	JOY_init();
 	JOY_setEventHandler(titleHandler);
 	
-	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 18, 5, 5, 3);
+	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL1, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 18, 5, 5, 3);
 	VDP_drawText("Mega Swirl",  15, 9);
 	VDP_drawText("Game Test", 15, 10);
 	VDP_drawText("Version v0.1.4b", 13, 11);
@@ -343,11 +339,13 @@ void titleScreen() {
 	}
 	VDP_setSpritesDirect(0, sfdefs, TITLE_SCREEN_SNOWFLAKES);
 
+
 	Z80_loadDriver(Z80_DRIVER_VGM, 1);
 	Z80_requestBus(1);
 	YM2612_enableDAC();
 	Z80_releaseBus();
 	SND_startPlay_VGM(muz_title);
+
 
 	while (waitflag == FALSE) {
 		
