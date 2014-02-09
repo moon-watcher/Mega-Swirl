@@ -2,6 +2,7 @@
 #define BMP_H
 
 #define BMP_ACCEPTABLE_HEADER 0x424D
+#define BMP_FILE_HEADER_SIZE 14
 
 #include <genesis.h>
 
@@ -27,7 +28,7 @@ typedef struct {
 
 typedef struct {
 	u32* tiles;
-	u16* palette;
+	u16 palette[16];
 	u16 size; //shall be a multiple of 8 (8 is one 8x8 tile)
 } vdpBitmap;
 
