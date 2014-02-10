@@ -28,16 +28,16 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 	for(int colour = 0; colour != SWAP_UINT32(head->colourCount); colour++) {
 		u32 paletteQuadruplet = SWAP_UINT32(bmpPalette[colour]);
 		u8* components = (u8*)&paletteQuadruplet;
-		u16 componentMask[3] = { 0, 0, 0 };
 		// Convert bmpPalette colours to SEGA colours by taking the upper nibble of each component
-		componentMask[C_RED] = components[C_RED] >> 4;
-		componentMask[C_BLUE] = components[C_BLUE] >> 4;
-		componentMask[C_GREEN] = components[C_GREEN] >> 4;
-		rv->palette[colour] = componentMask[C_RED] | componentMask[C_BLUE] << 8 | componentMask[C_GREEN] << 4;
+		//componentMask[C_RED] = components[C_RED] >> 4;
+		//componentMask[C_BLUE] = components[C_BLUE] >> 4;
+		//componentMask[C_GREEN] = components[C_GREEN] >> 4;
+		rv->palette[colour] = ( components[C_RED] >> 4 ) | ( components[C_BLUE] >> 4 ) << 8 | ( components[C_GREEN] >> 4 ) << 4;
 	}
 
 	// Reference the bmpImage
 	u16* bmpImage = (u16*)((u8*)bmpFile + SWAP_UINT32(head->bmpImageAddr));
 
+	VDP_setPalette(PAL3, rv->palette);
 	while(TRUE);
 }
