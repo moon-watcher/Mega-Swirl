@@ -23,10 +23,10 @@
 #define CURSOR_INCREMENT_SPEED 8
 #define TITLE_SCREEN_SNOWFLAKES 20
 
-#define BUILD_DATE "Built 28 January 2014"
+#define BUILD_DATE "Built "__DATE__
 
-#define CUR(x) (x * 2)
-#define SEL(x) (x / 16)
+#define CUR(x) ((x) * 2)
+#define SEL(x) ((x) / 16)
 
 void joyHandler(u16 joy, u16 changed, u16 state);
 void titleHandler(u16 joy, u16 changed, u16 state);
@@ -308,6 +308,7 @@ void titleScreen() {
 	VDP_drawText("Mega Swirl",  15, 9);
 	VDP_drawText("Game Test", 15, 10);
 	VDP_drawText("Version v0.1.4b", 13, 11);
+	VDP_drawText(BUILD_DATE, 12, 13);
 	VDP_drawText("- Press Start to Play -", 9, 15);
 	VDP_drawText("Music from Deflemask by Delek", 6, 17);
 
