@@ -59,9 +59,9 @@ typedef struct {
 	u8 swirltype;
 } snowflake;
 
-volatile int waitflag = FALSE;
-volatile u16 randbase;
-volatile int selected = FALSE;
+int waitflag = FALSE;
+u16 randbase;
+int selected = FALSE;
 int score = 0;
 SpriteDef cursor;
 
