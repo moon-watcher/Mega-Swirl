@@ -10,6 +10,9 @@
 #include <genesis.h>
 #include <audio/titlescreen.h>
 #include <res/swirl_assets.h>
+#include <globals.h>
+#include <custrand.h>
+#include <swirl_types.h>
 
 #define FALSE 0
 #define TRUE 1
@@ -23,7 +26,7 @@
 #define CURSOR_INCREMENT_SPEED 8
 #define TITLE_SCREEN_SNOWFLAKES 20
 
-#define BUILD_DATE "Built "__DATE__
+#define BUILD_DATE "Built "__DATE__" "__TIME__
 
 #define CUR(x) ((x) * 2)
 #define SEL(x) ((x) / 16)
@@ -50,14 +53,6 @@ struct ls {
 	u8 x;
 	u8 y;
 } lastselected;
-
-// A snowflake is an object representing a swirl on the titlescreen that will rain down from top to bottom
-typedef struct {
-	u32 startedAt;
-	u32 startDelay;
-	u8 fallRate;
-	u8 swirltype;
-} snowflake;
 
 int waitflag = FALSE;
 u16 randbase;
@@ -308,7 +303,7 @@ void titleScreen() {
 	VDP_drawText("Mega Swirl",  15, 9);
 	VDP_drawText("Game Test", 15, 10);
 	VDP_drawText("Version v0.1.4b", 13, 11);
-	VDP_drawText(BUILD_DATE, 12, 13);
+	VDP_drawText(BUILD_DATE, 7, 13);
 	VDP_drawText("- Press Start to Play -", 9, 15);
 	VDP_drawText("Music from Deflemask by Delek", 6, 17);
 
@@ -380,29 +375,4 @@ void titleScreen() {
 	JOY_setEventHandler(joyHandler);
 
 	SND_stopPlay_VGM();
-}
-
-void srand(u16 seed) {
-	randbase = 11073 * seed + 11;
-}
-
-u16 custrand() {
-	//this is the same random function but uses a different randbase
-	//custrand() + srand() provides slightly more enthropy than the function alone
-	#ifdef USE_XORSHIFT
-		static u32 x = 123456789;
-		static u32 y = 362436069;
-		static u32 z = 521288629;
-		static u32 w = 88675123;
-		u32 t;
-	 
-		t = x ^ (x << 11);
-		x = y; y = z; z = w;
-		w = w ^ (w >> 19) ^ (t ^ (t >> 8));
-		return w;
-	#else
-		randbase ^= (randbase >> 1) ^ GET_HVCOUNTER;
-		randbase ^= (randbase << 1);
-		return randbase >> 3;
-	#endif
 }
