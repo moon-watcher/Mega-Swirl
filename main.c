@@ -44,15 +44,8 @@ void srand(u16 seed);
 u16 custrand();
 void unselectEverything();
 
-struct swirl {
-	u8 id;
-	u8 selected;
-} board[BOARD_Y][BOARD_X];
-
-struct ls {
-	u8 x;
-	u8 y;
-} lastselected;
+struct swirl board[BOARD_Y][BOARD_X];
+struct ls lastselected;
 
 int waitflag = FALSE;
 u16 randbase;
