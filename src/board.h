@@ -1,7 +1,7 @@
 #ifndef BOARDOPS
 #define BOARDOPS
 
-#include <audio_ts.h>
+#include <res/audio_ts.h>
 #include <globals.h>
 #include <swirl_types.h>
 #include <vdp.h>

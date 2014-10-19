@@ -8,8 +8,8 @@
  **************************************************************
  */
 #include <genesis.h>
-#include <audio_ts.h>
-#include <swirl_assets.h>
+#include <res/audio_ts.h>
+#include <res/swirl_assets.h>
 #include <globals.h>
 #include <custrand.h>
 #include <swirl_types.h>

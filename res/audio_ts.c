@@ -1,4 +1,4 @@
-#include <audio_ts.h>
+#include <res/audio_ts.h>
 
 const unsigned char muz_title[66753] = {
 	86,103,109,32,189,4,1,0,96,1,0,0,153,158,54,0,0,0,0,0,21,4,1,0,0,125,100,0,0,0,0,0

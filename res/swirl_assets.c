@@ -1,4 +1,4 @@
-#include <swirl_assets.h>
+#include <res/swirl_assets.h>
 
 const u16 std_pal[16] = {
 	0x0000,0x00EE,0x0E0E,0x000E,0x0EE0,0x00E0,0x0E00,0x0888,	//  Palette: 0

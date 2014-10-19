@@ -1,8 +1,8 @@
 #ifndef TITLESCREEN
 #define TITLESCREEN
 
-#include <audio_ts.h>
-#include <swirl_assets.h>
+#include <res/audio_ts.h>
+#include <res/swirl_assets.h>
 #include <globals.h>
 #include <swirl_types.h>
 #include <types.h>
