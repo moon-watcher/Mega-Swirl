@@ -1,4 +1,4 @@
-#include <bmp.h>
+#include <bitmap.h>
 
 #define C_ALPHA 0
 #define C_RED 1

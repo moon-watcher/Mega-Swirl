@@ -1,10 +1,12 @@
-#ifndef BMP_H
-#define BMP_H
+#ifndef BMPSWIRL
+#define BMPSWIRL
 
 #define BMP_ACCEPTABLE_HEADER 0x424D
 #define BMP_FILE_HEADER_SIZE 14
 
-#include <genesis.h>
+#include <types.h>
+#include <vdp.h>
+#include <memory.h>
 
 typedef struct {
 	u16 magicNumber;
