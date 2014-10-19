@@ -16,6 +16,7 @@
 #include <handlers.h>
 #include <board.h>
 #include <titlescreen.h>
+#include <bitmap.h>
 
 void joyHandler(u16 joy, u16 changed, u16 state);
 void titleHandler(u16 joy, u16 changed, u16 state);
@@ -38,6 +39,7 @@ SpriteDef cursor;
 
 int main(void) {
 	titleScreen();
+	//renderRLEtoRAM(house);
 	initBoard();
 	drawBoard();
 	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 32, 0, 5, 3);

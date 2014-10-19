@@ -38,6 +38,5 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 	// Reference the bmpImage
 	u16* bmpImage = (u16*)((u8*)bmpFile + SWAP_UINT32(head->bmpImageAddr));
 
-	VDP_setPalette(PAL3, rv->palette);
-	while(TRUE);
+	VDP_setPalette(PAL2, rv->palette);
 }
