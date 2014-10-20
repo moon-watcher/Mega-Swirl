@@ -4,6 +4,9 @@
 #define BMP_ACCEPTABLE_HEADER 0x424D
 #define BMP_FILE_HEADER_SIZE 14
 
+#define ROL(x, y, bitwidth) ((x) << (y))|((x) >> ((bitwidth) - (y)))
+#define ROR(x, y, bitwidth) ((x) >> (y))|((x) << ((bitwidth) - (y)))
+
 #include <types.h>
 #include <vdp.h>
 #include <memory.h>
@@ -35,5 +38,7 @@ typedef struct {
 } vdpBitmap;
 
 vdpBitmap renderRLEtoRAM(u8 bmpFile[]);
+u8* decompressScanline(u8* compressedScanline, u16 size, s32 horizRes);
+s32 roundUp(s32 numToRound, s32 multiple);
 
 #endif // BMP_H
