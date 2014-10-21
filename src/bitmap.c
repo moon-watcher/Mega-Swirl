@@ -52,14 +52,8 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 	while(status) {
 		// Find 00 00 or 00 01, slice an array up to but not including that point
 		for(size = 0; (bmpPtr[size] != END_SCANLINE && bmpPtr[size] != END_FILE); size++);
-		u8* decompressedScanline = decompressScanline((u8*)bmpPtr, ( size * 2 ), SWAP_UINT32(head->width));
+		u8* decompressedScanline = decompressScanline( ((u8*)bmpPtr), ( size * 2 ), SWAP_UINT32(head->width));
 		bmpPtr = bmpPtr + size + 1;
-		
-		// DEBUG
-		char test[4];
-		intToStr(SWAP_UINT32(head->width), test, 4);
-		VDP_drawText(test, 0, 0);
-		while(TRUE);
 	}
 }
 
@@ -76,8 +70,14 @@ u8* decompressScanline(u8* compressedScanline, u16 size, s32 horizRes) {
 	// TODO: This needs to be roundable to nearest 2 (figure out how to get modulo working)
 	s32 width = horizRes / 2;
 	u8* decompressedScanline = MEM_alloc(sizeof(u8) * width);
-
 	
+	RLEPair* rlePair = (RLEPair*)compressedScanline;
+	
+	// DEBUG
+	char test[4];
+	intToHex( compressedScanline[2], test, 4);
+	VDP_drawText(test, 0, 0);
+	while(TRUE);
 	
 	return 0;
 }

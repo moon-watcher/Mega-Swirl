@@ -37,6 +37,11 @@ typedef struct {
 	u16 size; //shall be a multiple of 8 (8 is one 8x8 tile)
 } vdpBitmap;
 
+typedef struct {
+	u8 upperNibble :4;
+	u8 lowerNibble :4;
+} RLEPair;
+
 vdpBitmap renderRLEtoRAM(u8 bmpFile[]);
 u8* decompressScanline(u8* compressedScanline, u16 size, s32 horizRes);
 s32 roundUp(s32 numToRound, s32 multiple);
