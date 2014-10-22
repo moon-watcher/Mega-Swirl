@@ -52,7 +52,7 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 	while(status) {
 		// Find 00 00 or 00 01, slice an array up to but not including that point
 		for(size = 0; (bmpPtr[size] != END_SCANLINE && bmpPtr[size] != END_FILE); size++);
-		u8* decompressedScanline = decompressScanline( ((u8*)bmpPtr), ( size * 2 ), SWAP_UINT32(head->width));
+		u8* decompressedScanline = decompressScanline( bmpPtr, ( size * 2 ), SWAP_UINT32(head->width));
 		bmpPtr = bmpPtr + size + 1;
 	}
 }
@@ -60,24 +60,17 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 /**
  * Decompress a single scanline
  * 
- * @param		u8* 	compressedScanline		u8 format pointer to a specific scanline
+ * @param		u16* 	compressedScanline		u8 format pointer to a specific scanline
  * @param		u16		size					Size of this specific array
  * @param		s32		horizRes				Width of a scanline (from the BMPHeader)
  * @returns		An uncompressed scanline (one row of the RLE-4 bitmap)
  */
-u8* decompressScanline(u8* compressedScanline, u16 size, s32 horizRes) {
+u8* decompressScanline(u16* compressedScanline, u16 size, s32 horizRes) {
 	// Create array - 2 pixels fit in a byte, so take width / 2
 	// TODO: This needs to be roundable to nearest 2 (figure out how to get modulo working)
 	s32 width = horizRes / 2;
 	u8* decompressedScanline = MEM_alloc(sizeof(u8) * width);
 	
-	RLEPair* rlePair = (RLEPair*)compressedScanline;
-	
-	// DEBUG
-	char test[4];
-	intToHex( compressedScanline[2], test, 4);
-	VDP_drawText(test, 0, 0);
-	while(TRUE);
 	
 	return 0;
 }
