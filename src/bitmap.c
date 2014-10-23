@@ -75,7 +75,23 @@ u8* decompressScanline(u16* compressedScanline, u16 size, s32 horizRes) {
 	return 0;
 }
 
-// This doesn't seem to work as an idea
-s32 roundUp(s32 numToRound, s32 multiple) {
-   return ((numToRound + multiple - 1) / multiple) * multiple;
+// all u8 nibbles will be stored in the lower nibble of the byte (0x)
+u8 getNibble(u8* array, u8 index) {
+	// number & 1 - odd
+	if(index & 1) {
+		// index needs to be subtracted by 1, then take the lower nibble
+		return (array[index - 1] & 0x0F);
+	} else {
+		// use index as given. take the higher nibble
+		return (array[index] & 0xF0) >> 4;
+	}
+}
+
+// set a u8 nibble (lower nibble will be used)
+void setNibble(u8* array, u8 index, u8 value) {
+	if(index & 1) {
+		array[index - 1] = ((array[index] & 0xF0) | (value & 0x0F));
+	} else {
+		array[index] = ((array[index] & 0x0F) | (value << 4));
+	}
 }

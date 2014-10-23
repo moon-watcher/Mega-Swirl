@@ -40,6 +40,7 @@ typedef struct {
 
 vdpBitmap renderRLEtoRAM(u8 bmpFile[]);
 u8* decompressScanline(u16* compressedScanline, u16 size, s32 horizRes);
-s32 roundUp(s32 numToRound, s32 multiple);
+u8 getNibble(u8* array, u8 index);
+void setNibble(u8* array, u8 index, u8 value);
 
 #endif // BMP_H
