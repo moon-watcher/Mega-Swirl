@@ -71,16 +71,16 @@ u8* decompressScanline(u16* compressedScanline, u16 size, s32 horizRes) {
 	s32 width = horizRes / 2;
 	u8* decompressedScanline = MEM_alloc(sizeof(u8) * width);
 	
-	
+
 	return 0;
 }
 
 // all u8 nibbles will be stored in the lower nibble of the byte (0x)
-u8 getNibble(u8* array, u8 index) {
+u8 getNibble(u8* array, u16 index) {
 	// number & 1 - odd
 	if(index & 1) {
 		// index needs to be subtracted by 1, then take the lower nibble
-		return (array[index - 1] & 0x0F);
+		return (array[index / 2] & 0x0F);
 	} else {
 		// use index as given. take the higher nibble
 		return (array[index] & 0xF0) >> 4;
@@ -88,9 +88,9 @@ u8 getNibble(u8* array, u8 index) {
 }
 
 // set a u8 nibble (lower nibble will be used)
-void setNibble(u8* array, u8 index, u8 value) {
+void setNibble(u8* array, u16 index, u8 value) {
 	if(index & 1) {
-		array[index - 1] = ((array[index] & 0xF0) | (value & 0x0F));
+		array[index / 2] = ((array[index / 2] & 0xF0) | (value & 0x0F));
 	} else {
 		array[index] = ((array[index] & 0x0F) | (value << 4));
 	}
