@@ -46,37 +46,32 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 
 	// Reference the bmpImage
 	u16* bmpImage = (u16*)((u8*)bmpFile + SWAP_UINT32(head->bmpImageAddr));
-	u16* bmpPtr = bmpImage;
-	u8 status = TRUE;
-	u16 size = 0;
-	while(status) {
-		// Find 00 00 or 00 01, slice an array up to but not including that point
-		for(size = 0; (bmpPtr[size] != END_SCANLINE && bmpPtr[size] != END_FILE); size++);
-		u8* decompressedScanline = decompressScanline( bmpPtr, ( size * 2 ), SWAP_UINT32(head->width));
-		bmpPtr = bmpPtr + size + 1;
+	u16 bmpOffset = 0;
+	// careless
+	u16 scanline = SWAP_UINT32(head->height) - 1;
+	// careless
+	rv->tiles = (u8*)MEM_alloc(sizeof(u8) * ((SWAP_UINT32(head->width) / 2) * (SWAP_UINT32(head->height) / 2)));
+	while(TRUE) {		
+		if(doublet == END_SCANLINE) {
+			scanline--;
+			bmpOffset++;
+		} else if(doublet == END_FILE) {
+			break;
+		} else if(((doublet & 0xFF00) == 0x00) && ((doublet & 0x00FF) >= 0x03)) {
+			// unencoded run
+			for(u16 i = 0; i != (doublet & 0x00FF); i++) {
+				
+			}
+		} else {
+
+		}
+		while(TRUE);
 	}
-}
-
-/**
- * Decompress a single scanline
- * 
- * @param		u16* 	compressedScanline		u8 format pointer to a specific scanline
- * @param		u16		size					Size of this specific array
- * @param		s32		horizRes				Width of a scanline (from the BMPHeader)
- * @returns		An uncompressed scanline (one row of the RLE-4 bitmap)
- */
-u8* decompressScanline(u16* compressedScanline, u16 size, s32 horizRes) {
-	// Create array - 2 pixels fit in a byte, so take width / 2
-	// TODO: This needs to be roundable to nearest 2 (figure out how to get modulo working)
-	s32 width = horizRes / 2;
-	u8* decompressedScanline = MEM_alloc(sizeof(u8) * width);
-	
-
-	return 0;
 }
 
 // all u8 nibbles will be stored in the lower nibble of the byte (0x)
 u8 getNibble(u8* array, u16 index) {
+	// TODO: maybe optimise
 	// number & 1 - odd
 	if(index & 1) {
 		// index needs to be subtracted by 1, then take the lower nibble

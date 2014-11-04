@@ -33,14 +33,14 @@ typedef struct {
 } BMPHeader;
 
 typedef struct {
-	u32* tiles;
+	u8* tiles;
 	u16 palette[16];
 	u16 size; //shall be a multiple of 8 (8 is one 8x8 tile)
 } vdpBitmap;
 
 vdpBitmap renderRLEtoRAM(u8 bmpFile[]);
 u8* decompressScanline(u16* compressedScanline, u16 size, s32 horizRes);
-u8 getNibble(u8* array, u8 index);
-void setNibble(u8* array, u8 index, u8 value);
+u8 getNibble(u8* array, u16 index);
+void setNibble(u8* array, u16 index, u8 value);
 
 #endif // BMP_H
