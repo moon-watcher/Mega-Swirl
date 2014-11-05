@@ -12,6 +12,9 @@
 #include <memory.h>
 #include <vdp_tile.h>
 
+// Remove
+#include <debug.h>
+
 typedef struct {
 	u16 magicNumber;
 	u32 bmpSize;

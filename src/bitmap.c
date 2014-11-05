@@ -46,12 +46,16 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 
 	// Reference the bmpImage
 	u16* bmpImage = (u16*)((u8*)bmpFile + SWAP_UINT32(head->bmpImageAddr));
-	u16 bmpOffset = 0;
 	// careless
 	u16 scanline = SWAP_UINT32(head->height) - 1;
 	// careless
 	rv->tiles = (u8*)MEM_alloc(sizeof(u8) * ((SWAP_UINT32(head->width) / 2) * (SWAP_UINT32(head->height) / 2)));
-	while(TRUE) {		
+	
+	u16* bmpPos = bmpImage;
+	u8* tilesPos = rv->tiles;
+	u16 doublet;
+	while(TRUE) {
+		doublet = bmpImage[bmpOffset];
 		if(doublet == END_SCANLINE) {
 			scanline--;
 			bmpOffset++;
@@ -59,11 +63,12 @@ vdpBitmap renderRLEtoRAM(u8 bmpFile[]) {
 			break;
 		} else if(((doublet & 0xFF00) == 0x00) && ((doublet & 0x00FF) >= 0x03)) {
 			// unencoded run
-			for(u16 i = 0; i != (doublet & 0x00FF); i++) {
+			//for(u16 i = 0; i != (doublet & 0x00FF); i++) {
 				
-			}
+			//}
+			
 		} else {
-
+			// Standard encoded run (00 04+)
 		}
 		while(TRUE);
 	}
