@@ -38,8 +38,7 @@ int score = 0;
 SpriteDef cursor;
 
 int main(void) {
-	//titleScreen();
-	renderRLEtoRAM(house);
+	titleScreen();
 	initBoard();
 	drawBoard();
 	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 32, 0, 5, 3);
