@@ -1,0 +1,73 @@
+================================================================================
+File: IMGFORMT.TXT													  11/5/2014
+Description: Genesis Image Asset File Specification
+Author: mipani																1.0
+================================================================================
+
+<<< WHAT IS THE GENESIS IMAGE ASSET? >>>
+
+Genesis Image Asset (GIA) is a file format used for image assets in Sega
+Megadrive/Genesis games and applications.
+
+<<< FILE FORMAT >>>
+
+As an overview, the file consists of a header and the image data. All values are
+Big-Endian format (as the Motorola 68000 is Big-Endian.)
+
+Header:
+	
+*	uint32_t	magicNumber
+	The magic number identifying the image format. This shall be the 32-bit
+	value 0xB16D1CC5.
+	
+	Example: [ B1 6D 1C C5 ] - Specify a valid GIA file.
+	
+*	uint8_t		compressionOptions
+	The type of compression used in the image. Additionally, whether or not
+	the image is sprite-ordered or tile-ordered. The lower nibble is used for
+	the compression flag: the upper nibble is used for the ordering.
+	
+	Valid Values:
+	00 - Tile order, no compression.
+	01 - Tile order, 4bpp RLE compression.
+	10 - Sprite order, no compression.
+	11 - Sprite order, 4bpp RLE compression.
+	
+	Lower nibble is reserved for up to fifteen different types of compression.
+	
+	Example: See above.
+	
+*	uint8_t		xSegments
+	The number of 8x8 tiles in this image in the X direction. This means that
+	every image in the X direction must be a multiple of 8.
+	
+	Example: [ 01 ] - The image is 8 pixels across (one tile across).
+	
+*	uint8_t		ySegments
+	The number of 8x8 tiles in this image in the Y direction. This means that
+	every image in the Y direction must be a multiple of 8.
+	
+	Example: [ 04 ] - The image is 32 pixels down (four tiles down).
+
+Metadata:
+
+*	uint16_t		metadataSize
+	The size of the metadata header. If zero, there is no metadata.
+	
+	Example: [ 00 FF ] - The metadata is 255 bytes.
+	
+*	uint8_t*		metadataName
+	A null-terminated sequence of characters representing the name field.
+	
+*	uint8_t*		metadataAuthor
+	A null-terminated sequence of characters representing the author field.
+	
+*	uint8_t*		metadataDescription
+	A null-terminated sequence of characters representing the description field.
+	
+Image Palette:
+
+*	uint16_t*		imagePalette
+	Sixteen 16-bit unsigned integers representing colours 0 through 15. The
+	lower three nibbles are used as 0x0BGR.
+
