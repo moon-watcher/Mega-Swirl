@@ -32,7 +32,7 @@ Header:
 	01 - Tile order, 4bpp RLE compression.
 	10 - Sprite order, no compression.
 	11 - Sprite order, 4bpp RLE compression.
-	
+
 	Lower nibble is reserved for up to fifteen different types of compression.
 	
 	Example: See above.
@@ -70,4 +70,15 @@ Image Palette:
 *	uint16_t*		imagePalette
 	Sixteen 16-bit unsigned integers representing colours 0 through 15. The
 	lower three nibbles are used as 0x0BGR.
+	
+Image Format:
+
+	- No compression: The image is loaded in 8x8 tile segments, which may
+	be typecast right onto a uint32_t array. Every eight uint32_t's, a
+	new tile starts. The ordering is selected based on
+	compressionOptions.
+	
+	- RLE compression: Instructions are given to assemble 8x8 tile segments
+	one tile at a time. 
+	
 
