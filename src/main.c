@@ -38,6 +38,7 @@ int score = 0;
 SpriteDef cursor;
 
 int main(void) {
+	getImage(house);
 	titleScreen();
 	initBoard();
 	drawBoard();

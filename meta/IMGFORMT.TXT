@@ -1,5 +1,5 @@
 ================================================================================
-File: IMGFORMT.TXT													  11/5/2014
+File: IMGFORMT.TXT													  11/8/2014
 Description: Genesis Image Asset File Specification
 Author: mipani																1.0
 ================================================================================
@@ -49,21 +49,11 @@ Header:
 	
 	Example: [ 04 ] - The image is 32 pixels down (four tiles down).
 
-Metadata:
-
-*	uint16_t		metadataSize
-	The size of the metadata header. If zero, there is no metadata.
+*	uint32_t		metadataLocation
+	The location of the metadata (usually after the image).
+	If null, there is no metadata.
 	
-	Example: [ 00 FF ] - The metadata is 255 bytes.
-	
-*	uint8_t*		metadataName
-	A null-terminated sequence of characters representing the name field.
-	
-*	uint8_t*		metadataAuthor
-	A null-terminated sequence of characters representing the author field.
-	
-*	uint8_t*		metadataDescription
-	A null-terminated sequence of characters representing the description field.
+	Example: [ 00 00 FF FF ] - The metadata is at file offset 65535.
 	
 Image Palette:
 
@@ -73,12 +63,24 @@ Image Palette:
 	
 Image Format:
 
+	Image always starts at offset 43 (0x2B).
+
 	- No compression: The image is loaded in 8x8 tile segments, which may
 	be typecast right onto a uint32_t array. Every eight uint32_t's, a
-	new tile starts. The ordering is selected based on
+	new tile starts. Each nibble is a pixel. This format is directly usable
+	by the Sega Genesis VDP. The ordering is selected based on
 	compressionOptions.
 	
 	- RLE compression: Instructions are given to assemble 8x8 tile segments
 	one tile at a time. 
 	
+Metadata:
 
+*	uint8_t*		metadataName
+	A null-terminated sequence of characters representing the name field.
+	
+*	uint8_t*		metadataAuthor
+	A null-terminated sequence of characters representing the author field.
+	
+*	uint8_t*		metadataDescription
+	A null-terminated sequence of characters representing the description field.
