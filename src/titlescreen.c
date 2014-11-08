@@ -93,5 +93,11 @@ void titleScreen() {
 	VDP_clearPlan(APLAN, FALSE);
 	JOY_setEventHandler(joyHandler);
 
+	ImageAsset* test = getImage(swlspace);
+	VDP_setPalette(PAL0, test->palette);
+	VDP_loadTileData(test->tiles, TILE_USERINDEX + 55, (test->xTiles * test->yTiles), TRUE);
+	VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL0, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 55), 0, 0, test->xTiles, test->yTiles);
+	MEM_free( test );
+	
 	SND_stopPlay_VGM();
 }

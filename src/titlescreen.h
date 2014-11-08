@@ -16,6 +16,7 @@
 #include <vdp_tile.h>
 #include <sound.h>
 #include <handlers.h>
+#include <bitmap.h>
 
 void titleScreen();
 
