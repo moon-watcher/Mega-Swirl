@@ -13,15 +13,12 @@ ImageAsset* getImage(u8 file[]) {
 	}
 	
 	// TODO: Compression Options (nibble methods)
-	
+	bitmap->spriteOrder = header->order;
 	bitmap->xTiles = header->xSegments;
 	bitmap->yTiles = header->ySegments;
 	
 	bitmap->palette = (u16*)(file + PALETTE_OFFSET);
-
-	printHex(*(u32*)(file + 1), 4);
-	
-	while(TRUE);
+	bitmap->tiles = (u32*)(file + IMAGE_OFFSET);
 	
 	return bitmap;
 }

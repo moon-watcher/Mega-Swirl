@@ -29,12 +29,12 @@ def pad_to_multiple(val):
 	Constants
 """
 COMPRESSION = {
-	'NONE': '0',
-	'RLE': '1'
+	'NONE': '00',
+	'RLE': '01'
 }
 ORDER = {
-	'TILE': '0',
-	'SPRITE': '1'
+	'TILE': '00',
+	'SPRITE': '01'
 }
 
 if len(sys.argv) > 1:
@@ -94,7 +94,8 @@ with open('test.gia', 'wb') as f:
 	
 	# Write options
 	# Compression and sprite order
-	f.write( struct.pack('B', int( compression + sprite_order, 16 ) ) )
+	f.write( struct.pack('B', int( compression, 16 ) ) )
+	f.write( struct.pack('B', int( sprite_order, 16 ) ) )
 	# Tiles - X direction
 	f.write( struct.pack('B', image.size[0] // 8 ) )
 	# Tiles - Y direction

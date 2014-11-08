@@ -20,6 +20,7 @@ extern const u32 swirls[160];
 extern const u32 swirl_spr[128];
 extern const u32 title_screen[120];
 extern const u32 zontar[128];
-extern const u8 house[171];
+extern const u8 house[172];
+extern const u8 swlspace[35884];
 
 #endif

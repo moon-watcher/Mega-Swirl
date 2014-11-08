@@ -22,18 +22,21 @@ Header:
 	
 	Example: [ B1 6D 1C C5 ] - Specify a valid GIA file.
 	
-*	uint8_t		compressionOptions
-	The type of compression used in the image. Additionally, whether or not
-	the image is sprite-ordered or tile-ordered. The lower nibble is used for
-	the compression flag: the upper nibble is used for the ordering.
+*	uint8_t		compression
+	The type of compression used in the image.
 	
 	Valid Values:
-	00 - Tile order, no compression.
-	01 - Tile order, 4bpp RLE compression.
-	10 - Sprite order, no compression.
-	11 - Sprite order, 4bpp RLE compression.
+	00 - No compression
+	01 - 4bpp RLE compression
+	
+	Example: See above.
+	
+*	uint8_t		order
+	Whether or not the image is sprite-ordered or tile-ordered. 
 
-	Lower nibble is reserved for up to fifteen different types of compression.
+	Valid values:
+	00 - Sprite order
+	01 - Tile order
 	
 	Example: See above.
 	
@@ -49,9 +52,9 @@ Header:
 	
 	Example: [ 04 ] - The image is 32 pixels down (four tiles down).
 
-*	uint32_t		metadataLocation
-	The location of the metadata (usually after the image).
-	If null, there is no metadata.
+*	uint32_t		metadataOffset
+	The offset of the metadata (usually after the image).
+	If 0, there is no metadata.
 	
 	Example: [ 00 00 FF FF ] - The metadata is at file offset 65535.
 	
@@ -63,7 +66,7 @@ Image Palette:
 	
 Image Format:
 
-	Image always starts at offset 43 (0x2B).
+	Image always starts at offset 44.
 
 	- No compression: The image is loaded in 8x8 tile segments, which may
 	be typecast right onto a uint32_t array. Every eight uint32_t's, a

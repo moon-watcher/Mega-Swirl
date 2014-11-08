@@ -38,7 +38,12 @@ int score = 0;
 SpriteDef cursor;
 
 int main(void) {
-	getImage(house);
+	ImageAsset* test = getImage(swlspace);
+	//printHex(test->tiles[0], 8);
+	VDP_setPalette(PAL0, test->palette);
+	VDP_loadTileData(test->tiles, TILE_USERINDEX, (test->xTiles * test->yTiles), TRUE);
+	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL0, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX), 0, 0, test->xTiles, test->yTiles);
+	while(TRUE);
 	titleScreen();
 	initBoard();
 	drawBoard();

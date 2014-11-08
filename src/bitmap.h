@@ -2,8 +2,8 @@
 #define IMAGEASSET
 
 #define GENESIS_IMAGE_ASSET 	0xB16D1CC5
-#define	PALETTE_OFFSET		0xB		
-#define	IMAGE_OFFSET		0x2B
+#define	PALETTE_OFFSET		0xC		
+#define	IMAGE_OFFSET		0x2C
 
 #include <types.h>
 #include <vdp.h>
@@ -13,15 +13,20 @@
 
 typedef struct {
 	u32 magicNumber;
-	u8 compressionOptions;
+	
+	u8 compression;
+	u8 order;
+	
 	u8 xSegments;
 	u8 ySegments;
+	
 	u32 metadataLocation;
 } ImageAssetHeader;
 
 typedef struct {
 	u8 xTiles;
 	u8 yTiles;
+
 	u8 spriteOrder;
 	
 	u32* tiles;
