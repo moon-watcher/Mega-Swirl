@@ -18,13 +18,25 @@ void titleScreen() {
 	JOY_init();
 	JOY_setEventHandler(titleHandler);
 	
-	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 18, 5, 5, 3);
-	VDP_drawText("Mega Swirl",  15, 9);
-	VDP_drawText("Game Test", 15, 10);
-	VDP_drawText("Version v0.1.4b", 13, 11);
-	VDP_drawText(BUILD_DATE, 7, 13);
-	VDP_drawText("- Press Start to Play -", 9, 15);
-	VDP_drawText("Music from Deflemask by Delek", 6, 17);
+	ImageAsset* title = getImage(titlbg);
+	VDP_setPalette(PAL0, title->palette);
+	VDP_loadTileData(title->tiles, TILE_USERINDEX + 55, (title->xTiles * title->yTiles), TRUE);
+	VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL0, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 55), 0, 0, title->xTiles, title->yTiles);
+	MEM_free( title );
+	
+	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 18, 3, 5, 3);
+	VDP_drawText("Mega Swirl",  1, 7);
+	VDP_drawText("Testing Demo", 1, 8);
+	VDP_drawText(VERSION_STRING, 1, 9);
+	
+	VDP_drawText("Music from Deflemask by", 1, 11);
+	VDP_drawText("Delek", 1, 12);
+	
+	VDP_drawText("Featuring artwork by", 1, 14);
+	VDP_drawText("Radioactivemantaray", 1, 15);
+	
+	VDP_drawText("- Press Start to Play -", 1, 21);
+	VDP_drawText(BUILD_DATE, 1, 24);
 
 	u8 selected_swirl;
 	for(int i = 0; i != TITLE_SCREEN_SNOWFLAKES; i++) {

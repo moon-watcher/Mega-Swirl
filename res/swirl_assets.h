@@ -22,5 +22,6 @@ extern const u32 title_screen[120];
 extern const u32 zontar[128];
 extern const u8 house[172];
 extern const u8 swlspace[35884];
+extern const u8 titlbg[35884];
 
 #endif

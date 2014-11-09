@@ -17,6 +17,7 @@
 #define TITLE_SCREEN_SNOWFLAKES 20
 
 #define BUILD_DATE "Built "__DATE__" "__TIME__
+#define VERSION_STRING "Version v0.2.0b"
 
 #define CUR(x) ((x) * 2)
 #define SEL(x) ((x) / 16)

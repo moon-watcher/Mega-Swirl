@@ -1,5 +1,11 @@
 #!/usr/bin/python
 
+"""
+	This entire thing sucks and is generally horrible.
+	
+	A ticket will be put in for its expansion and rewrite.
+"""
+
 from PIL import Image
 import sys, binascii, struct
 
@@ -14,6 +20,7 @@ def split_by_n(arr, num):
 """
 def get_sega_colour(col):
 	return int(''.join([ '0', col[0], col[2], col[4] ]), 16)
+
 	
 """
 	Pad value to nearest multiple of 8. If value / 8 is not a whole number,
@@ -59,6 +66,7 @@ if len(sega_segments) < 16:
 compression = COMPRESSION['NONE']
 sprite_order = ORDER['TILE']
 sega_bytes = []
+outfilename = inputfn.split('.')[0] + '.gia'
 
 print "Image Color Segments: " + str(segments)
 print "Sega Color Segments:  " + str(sega_segments)
@@ -88,7 +96,7 @@ for tileY in range(0, image.size[1], 8):
 
 # sega_bytes looks good from here
 
-with open('test.gia', 'wb') as f:
+with open(outfilename, 'wb') as f:
 	# Write header
 	f.write( struct.pack('>I', 0xB16D1CC5) )
 	

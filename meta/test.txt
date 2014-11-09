@@ -1,3 +1,0 @@
-# Palette
-# Mode: RGB
-0
