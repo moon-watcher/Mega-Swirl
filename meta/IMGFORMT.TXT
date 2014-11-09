@@ -64,9 +64,19 @@ Image Palette:
 	Sixteen 16-bit unsigned integers representing colours 0 through 15. The
 	lower three nibbles are used as 0x0BGR.
 	
+	If the upper byte of imagePalette[0] is "FF", that means this image 
+	belongs to a *palette group*. Palette groups are to reduce the redundancy
+	of specifying palettes within Genesis Image Asset files directly included
+	into the game ROM. When images specify a palette group, it is *suggested*
+	that you use this palette group when loading into VDP, although this is
+	unenforcable. The palette group is contained within the lower byte;
+	any Genesis program may contain up to 255 palettes, accessible from a
+	global palette manager.
+	
 Image Format:
 
-	Image always starts at offset 44.
+	Image normally starts at offset 44. If a palette GROUP is specified,
+	image will start at offset 14.
 
 	- No compression: The image is loaded in 8x8 tile segments, which may
 	be typecast right onto a uint32_t array. Every eight uint32_t's, a
