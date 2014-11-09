@@ -5,7 +5,6 @@
 	
 	A ticket will be put in for its expansion and rewrite.
 """
-
 from PIL import Image
 import sys, binascii, struct
 
@@ -46,6 +45,11 @@ ORDER = {
 
 if len(sys.argv) > 1:
 	inputfn = sys.argv[1]
+	
+	if len(sys.argv) > 2:
+		option = sys.argv[2]
+	else:
+		option = None
 else:
 	print "CONVERT.PY crude version: Please enter a filename."
 	sys.exit(0)
@@ -64,37 +68,37 @@ if len(sega_segments) < 16:
 	for i in range(0, 16 - len(sega_segments)):
 		sega_segments.append('0000')
 compression = COMPRESSION['NONE']
-sprite_order = ORDER['TILE']
+sprite_order = ORDER['SPRITE'] if option == "-s" else ORDER['TILE']
 sega_bytes = []
 outfilename = inputfn.split('.')[0] + '.gia'
 
+print "Converting for " + ( "sprite" if sprite_order == ORDER['SPRITE'] else "tile" ) + " order"
 print "Image Color Segments: " + str(segments)
 print "Sega Color Segments:  " + str(sega_segments)
 print "Image size:           " + str(image.size)
 
-#For image padding to 8-alignment
-#newimage = Image.new(image.mode, (640,480))
-#newimage.paste(image, (0,0))
-#print newimage.load()[319,0]
-#print pixel_map[319,0]
-#print format(pixel_map[0,0], 'x')
+if sprite_order == ORDER['TILE']:
+	for tileY in range(0, image.size[1], 8):
+		for tileX in range(0, image.size[0], 8):
+			#individual tiles	
+			for y in range(tileY, tileY + 8):
+				sega_row = ''
+				
+				for x in range(tileX, tileX + 8):
+					sega_row = sega_row + format(pixel_map[x, y], 'x')
 
-#for y in range(originy, originy + 8):
-#	for x in range(originx, originx + 8):
-#		print (x,y)
-
-for tileY in range(0, image.size[1], 8):
+				sega_bytes.append(sega_row)
+else:
 	for tileX in range(0, image.size[0], 8):
-		#individual tiles	
-		for y in range(tileY, tileY + 8):
-			sega_row = ''
-			
-			for x in range(tileX, tileX + 8):
-				sega_row = sega_row + format(pixel_map[x, y], 'x')
+		for tileY in range(0, image.size[1], 8):
+			#individual tiles	
+			for y in range(tileY, tileY + 8):
+				sega_row = ''
+				
+				for x in range(tileX, tileX + 8):
+					sega_row = sega_row + format(pixel_map[x, y], 'x')
 
-			sega_bytes.append(sega_row)
-
-# sega_bytes looks good from here
+				sega_bytes.append(sega_row)
 
 with open(outfilename, 'wb') as f:
 	# Write header

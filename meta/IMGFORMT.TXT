@@ -35,8 +35,8 @@ Header:
 	Whether or not the image is sprite-ordered or tile-ordered. 
 
 	Valid values:
-	00 - Sprite order
-	01 - Tile order
+	00 - Tile order
+	01 - Sprite order
 	
 	Example: See above.
 	
