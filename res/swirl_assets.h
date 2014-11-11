@@ -1,6 +1,11 @@
 #ifndef ASSETS_SWIRL
 #define ASSETS_SWIRL
 
+#define	CORNER		55
+#define HORIZONTAL  56
+#define VERTICAL 	57
+#define ARROW		58
+
 #include <types.h>
 
 /**************************************************************
@@ -23,5 +28,6 @@ extern const u32 zontar[128];
 extern const u8 house[172];
 extern const u8 swlspace[35884];
 extern const u8 titlbg[35884];
+extern const u8 dialog_tiles[172];
 
 #endif

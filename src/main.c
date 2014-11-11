@@ -17,6 +17,7 @@
 #include <board.h>
 #include <titlescreen.h>
 #include <bitmap.h>
+#include <mainmenu.h>
 
 void joyHandler(u16 joy, u16 changed, u16 state);
 void titleHandler(u16 joy, u16 changed, u16 state);
@@ -39,11 +40,11 @@ SpriteDef cursor;
 
 int main(void) {
 	titleScreen();
+	mainMenu();
 	initBoard();
 	drawBoard();
 	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 32, 0, 5, 3);
-	while(1) {
-		VDP_waitVSync();
-	}
-	return 0;
+	
+	// Transfer control to callbacks
+	while(TRUE);
 }

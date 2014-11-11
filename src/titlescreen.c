@@ -11,6 +11,7 @@ void titleScreen() {
 	VDP_loadTileData(swirls, TILE_USERINDEX, 20, TRUE);
 	VDP_loadTileData(title_screen, TILE_USERINDEX + 20, 15, TRUE);
 	VDP_loadTileData(swirl_spr, TILE_USERINDEX + 35, 20, TRUE);
+	
 	VDP_setPalette(PAL1, swirl_pal);
 	VDP_setPalette(PAL2, sel_pal);
 	VDP_setPalette(PAL3, ts_pal);
@@ -20,8 +21,8 @@ void titleScreen() {
 	
 	ImageAsset* title = getImage(titlbg);
 	VDP_setPalette(PAL0, title->palette);
-	VDP_loadTileData(title->tiles, TILE_USERINDEX + 55, (title->xTiles * title->yTiles), TRUE);
-	VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL0, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 55), 0, 0, title->xTiles, title->yTiles);
+	VDP_loadTileData(title->tiles, TILE_USERINDEX + 59, (title->xTiles * title->yTiles), TRUE);
+	VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL0, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 59), 0, 0, title->xTiles, title->yTiles);
 	MEM_free( title );
 	
 	VDP_fillTileMapRectInc(VDP_PLAN_A, TILE_ATTR_FULL(PAL3, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 20), 18, 3, 5, 3);
@@ -100,16 +101,5 @@ void titleScreen() {
 	}
 
 	waitflag = FALSE;
-
 	srand(GET_HVCOUNTER);
-	VDP_clearPlan(APLAN, FALSE);
-	JOY_setEventHandler(joyHandler);
-
-	ImageAsset* test = getImage(swlspace);
-	VDP_setPalette(PAL0, test->palette);
-	VDP_loadTileData(test->tiles, TILE_USERINDEX + 55, (test->xTiles * test->yTiles), TRUE);
-	VDP_fillTileMapRectInc(VDP_PLAN_B, TILE_ATTR_FULL(PAL0, PRIORITY_LOW, FALSE, FALSE, TILE_USERINDEX + 55), 0, 0, test->xTiles, test->yTiles);
-	MEM_free( test );
-	
-	SND_stopPlay_VGM();
 }

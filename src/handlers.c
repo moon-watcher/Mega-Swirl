@@ -11,6 +11,13 @@ void titleHandler(u16 joy, u16 changed, u16 state) {
 
 }
 
+void menuHandler(u16 joy, u16 changed, u16 state) {
+	switch(joy) {
+		case JOY_1:
+			break;
+	}
+}
+
 void joyHandler(u16 joy, u16 changed, u16 state) {
 	switch (joy) {
 		case JOY_1:
